@@ -1,0 +1,10 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+
+- Always use "pnpm" (never use any other package manager like npm, bun, deno)
+- Always use typescript. 
+- Tools are always added and build inside `src/tools/*.ts` folder.
+- Don't add too much comments. only on complex functions

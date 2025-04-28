@@ -1,0 +1,18 @@
+# Add patterns to ignore here, one per line
+# Example:
+# *.log
+# tmp/
+public
+prompts
+CHANGELOG.md
+CONTRIBUTING.md
+README.md
+LICENSE
+scripts
+.vscode
+docs
+DOCKERFILE
+tests/server.test.ts
+
+# MAYBE REMOVE THIS LATER ON
+.cursor

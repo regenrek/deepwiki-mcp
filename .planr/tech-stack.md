@@ -1,0 +1,22 @@
+# Tech Stack
+_Last updated: April 26 2025_
+
+## Framework reference table
+
+| Framework / Library | Latest Stable Version | Short Description | npm Package | Installed | GitHub | Docs |
+| --- | --- | --- | --- | --- | --- | --- |
+| Undici | 7.8.0 | Modern fetch-compatible HTTP/1.1+2 client | `undici` | ✅ | nodejs/undici | <https://undici.nodejs.org>  ([nodejs/undici: An HTTP/1.1 client, written from scratch for Node.js](https://github.com/nodejs/undici?utm_source=chatgpt.com)) |
+| p-queue | 8.1.0 | Promise queue with concurrency and rate-limits | `p-queue` | ✅ | sindresorhus/p-queue | <https://github.com/sindresorhus/p-queue#readme>  ([sindresorhus/p-queue: Promise queue with concurrency control](https://github.com/sindresorhus/p-queue?utm_source=chatgpt.com)) |
+| robots-parser | 3.0.1 | Helper to respect robots.txt rules | `robots-parser` | ✅ | samclarke/robots-parser | <https://github.com/samclarke/robots-parser#readme>  ([NodeJS robots.txt parser with support for wildcard (*) matching.](https://github.com/samclarke/robots-parser?utm_source=chatgpt.com)) |
+| LinkeDOM | 0.18.9 | Fast server-side DOM implementation | `linkedom` | ✅ | WebReflection/linkedom | <https://github.com/WebReflection/linkedom#readme>  ([WebReflection/linkedom: A triple-linked lists based DOM ... - GitHub](https://github.com/WebReflection/linkedom?utm_source=chatgpt.com)) |
+| unified | 11.0.5 | AST processing core | `unified` | ✅ | unifiedjs/unified | <https://unifiedjs.com>  ([unifiedjs/unified: Parse, inspect, transform, and serialize content with ...](https://github.com/unifiedjs/unified?utm_source=chatgpt.com)) |
+| rehype-parse | 9.0.1 | HTML-to-HAST parser | `rehype-parse` | ✅ | rehypejs/rehype | <https://github.com/rehypejs/rehype/tree/main/packages/rehype-parse#readme>  ([rehypejs/rehype: HTML processor powered by plugins part ... - GitHub](https://github.com/rehypejs/rehype?utm_source=chatgpt.com)) |
+| rehype-sanitize | 6.0.0 | Whitelist-based HTML sanitizer | `rehype-sanitize` | ✅ | rehypejs/rehype-sanitize | <https://github.com/rehypejs/rehype-sanitize#readme>  ([rehypejs/rehype-sanitize: plugin to sanitize HTML - GitHub](https://github.com/rehypejs/rehype-sanitize?utm_source=chatgpt.com)) |
+| rehype-remark | 10.0.1 | HAST-to-MDAST converter | `rehype-remark` | ✅ | rehypejs/rehype-remark | <https://github.com/rehypejs/rehype-remark#readme>  ([rehypejs/rehype-remark: plugin to transform from HTML ... - GitHub](https://github.com/rehypejs/rehype-remark?utm_source=chatgpt.com)) |
+| remark-stringify | 10.0.0 | Markdown emitter | `remark-stringify` | ✅ | remarkjs/remark | <https://github.com/remarkjs/remark/tree/main/packages/remark-stringify#readme>  ([remark/packages/remark-stringify/readme.md at main - GitHub](https://github.com/remarkjs/remark/blob/main/packages/remark-stringify/readme.md?utm_source=chatgpt.com)) |
+| Zod | 3.24.3 | Type-safe schema validation | `zod` | ✅ | colinhacks/zod | <https://zod.dev>  ([colinhacks/zod: TypeScript-first schema validation with ... - GitHub](https://github.com/colinhacks/zod?utm_source=chatgpt.com)) |
+| Vitest | 3.1.2 | Fast Vite-powered test runner | `vitest` | ✅ | vitest-dev/vitest | <https://vitest.dev>  ([vitest-dev/vitest: Next generation testing framework powered by Vite.](https://github.com/vitest-dev/vitest?utm_source=chatgpt.com)) |
+| TypeScript | 5.5.2 | Typed superset of JavaScript | `typescript` | ✅ | microsoft/TypeScript | <https://www.typescriptlang.org>  ([TypeScript is a superset of JavaScript that compiles to ... - GitHub](https://github.com/microsoft/TypeScript?utm_source=chatgpt.com)) |
+| ESLint | 9.4.0 | Pluggable JavaScript linter | `eslint` | ✅ | eslint/eslint | <https://eslint.org>  ([eslint/eslint: Find and fix problems in your JavaScript code. - GitHub](https://github.com/eslint/eslint?utm_source=chatgpt.com)) |
+| eslint-plugin-vitest | 1.1.42 | ESLint rules for Vitest | `@vitest/eslint-plugin` | ✅ | vitest-dev/eslint-plugin-vitest | <https://github.com/vitest-dev/eslint-plugin-vitest#readme>  ([eslint plugin for vitest - GitHub](https://github.com/vitest-dev/eslint-plugin-vitest?utm_source=chatgpt.com)) |
+| MCP TypeScript SDK | 1.6.0 | Model Context Protocol SDK and transport helpers | `@modelcontextprotocol/sdk` | ✅ | modelcontextprotocol/typescript-sdk | <https://github.com/modelcontextprotocol/typescript-sdk#readme>  ([The official Typescript SDK for Model Context Protocol servers and ...](https://github.com/modelcontextprotocol/typescript-sdk?utm_source=chatgpt.com)) |

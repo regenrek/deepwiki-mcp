@@ -1,0 +1,10 @@
+---
+description: 
+globs: tests/**
+alwaysApply: false
+---
+- Always use vitest (never use jest or any other testing framework)
+- Always pin **Vitest ≥ 3.1** (or `latest`) in `devDependencies` so `vi.stubGlobal`, `unstubGlobals`, and other modern helpers exist.  
+- Use `environment: 'node'` and **Node 22+** so the built-in `fetch` and `Headers` classes are available without polyfills.  
+- Trim or normalise strings before comparing multi-line Markdown/HTML: `expect(result.trim())` rather than raw literals with trailing spaces.  
+- Always place async fetch stubs **inside** each test (or `beforeEach`) so they do not bleed unexpected data into other cases.
