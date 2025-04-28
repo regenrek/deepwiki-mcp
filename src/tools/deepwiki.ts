@@ -42,7 +42,8 @@ export function deepwikiTool({ mcp }: McpToolContext) {
       const req = parse.data
       const root = new URL(req.url)
 
-      if (root.hostname !== 'deepwiki.com') {
+      const allowedHostnames = ['deepwiki.com', 'www.deepwiki.com']
+      if (!allowedHostnames.includes(root.hostname)) {
         const err: z.infer<typeof ErrorEnvelope> = {
           status: 'error',
           code: 'DOMAIN_NOT_ALLOWED',

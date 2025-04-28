@@ -1,128 +1,28 @@
-# Deepwiki-to-Markdown MCP Server
+# Deepwiki MCP Server
 
-A standalone TypeScript service that receives a Deepwiki repository URL through Model Context Protocol (MCP), crawls every in-scope page, converts the sanitized HTML to Markdown, and returns either a single aggregated document or a page-structured array.
+This is an **unofficial Deepwiki MCP Server**
+
+It takes a Deepwiki URL via MCP, crawls all relevant pages, converts them to Markdown, and returns either one document or a list by page.
 
 ## Features
 
-- **Domain Safety**: Only processes URLs from deepwiki.com domain
-- **Scope Limitation**: Respects repository boundaries without crawling external resources
-- **HTML Sanitization**: Removes headers, footers, navigation, scripts, and ads
-- **Progress Streaming**: Provides real-time updates on crawl progress
-- **Link Rewriting**: Converts repository links to work in Markdown format
-- **Multiple Output Formats**: Choose between aggregated Markdown or structured page data
-- **Error Handling**: Detailed error messages and partial success handling
-- **Performance**: Fast processing with configurable concurrency and depth limits
-
-## Installation
-
-### From NPM
-
-```bash
-npm install mcp-deepwiki
-```
-
-Or with yarn:
-
-```bash
-yarn add mcp-deepwiki
-```
-
-### From Source
-
-```bash
-# Clone the repository
-git clone https://github.com/regenrek/mcp-deepwiki.git
-cd mcp-deepwiki
-
-# Install dependencies
-npm install
-
-# Build the package
-npm run build
-```
+- 🔒 **Domain Safety**: Only processes URLs from deepwiki.com
+- 🧹 **HTML Sanitization**: Strips headers, footers, navigation, scripts, and ads
+- 🔗 **Link Rewriting**: Adjusts links to work in Markdown
+- 📄 **Multiple Output Formats**: Get one document or structured pages
+- 🚀 **Performance**: Fast crawling with adjustable concurrency and depth
 
 ## Usage
 
-### CLI Usage
-
-The MCP server can be run in three different transport modes:
-
-```bash
-# Run with stdio transport (default)
-npx mcp-deepwiki
-
-# Run with HTTP transport
-npx mcp-deepwiki --http --port 3000
-
-# Run with SSE transport
-npx mcp-deepwiki --sse --port 3001
 ```
-
-### Working with the MCP Server
-
-#### Using the MCP Inspector
-
-The easiest way to interact with the MCP server is using the MCP Inspector:
-
-```bash
-# In one terminal, start the server with HTTP transport
-npm run dev-http
-
-# In another terminal, or using a web browser, open the inspector
-npx @modelcontextprotocol/inspector http://localhost:3000/mcp
-```
-
-The inspector provides a GUI for sending requests to the server and viewing responses.
-
-#### Direct API Calls
-
-For HTTP transport, you can make direct API calls:
-
-```bash
-curl -X POST http://localhost:3000/mcp \
-  -H "Content-Type: application/json" \
-  -d '{
-    "id": "req-1",
-    "action": "deepwiki_fetch",
-    "params": {
-      "url": "https://deepwiki.com/user/repo",
-      "mode": "aggregate"
+{
+  "mcpServers": {
+    "mcp-deepwiki": {
+      "command": "npx",
+      "args": ["-y", "mcp-deepwiki"]
     }
-  }'
-```
-
-### Integration with Large Language Models
-
-This MCP server is designed to be used with LLMs that support the Model Context Protocol. For example, with Claude models:
-
-```javascript
-// Example using @anthropic-ai/sdk with MCP
-import { Claude } from '@anthropic-ai/sdk'
-import { McpClient } from '@modelcontextprotocol/client'
-
-const claude = new Claude({
-  apiKey: process.env.ANTHROPIC_API_KEY,
-})
-
-const mcpClient = new McpClient({
-  url: 'http://localhost:3000/mcp', // Your MCP server URL
-})
-
-// Register the MCP client with Claude
-claude.registerMcpClient(mcpClient)
-
-// Now Claude can use the deepwiki_fetch tool
-const response = await claude.messages.create({
-  model: 'claude-3-sonnet-20240229',
-  max_tokens: 1024,
-  system: 'You have access to a tool that can fetch and convert Deepwiki content to Markdown.',
-  messages: [
-    {
-      role: 'user',
-      content: 'Please fetch the content from this Deepwiki repository: https://deepwiki.com/user/repo'
-    }
-  ]
-})
+  }
+}
 ```
 
 ### MCP Tool Integration
@@ -134,7 +34,8 @@ The package registers a tool named `deepwiki_fetch` that you can use with any MC
   "action": "deepwiki_fetch",
   "params": {
     "url": "https://deepwiki.com/user/repo",
-    "mode": "aggregate"
+    "mode": "aggregate",
+    "maxDepth": "1"
   }
 }
 ```
@@ -218,6 +119,52 @@ Fetched https://deepwiki.com/user/repo/page1: 8750 bytes in 320ms (status: 200)
 Fetched https://deepwiki.com/user/repo/page2: 6200 bytes in 280ms (status: 200)
 ```
 
+## Local Development - Installation
+
+### Local Usage
+
+```
+{
+  "mcpServers": {
+    "mcp-deepwiki": {
+      "command": "node",
+      "args": ["./bin/cli.mjs"]
+    }
+  }
+}
+```
+
+### From Source
+
+```bash
+# Clone the repository
+git clone https://github.com/regenrek/mcp-deepwiki.git
+cd mcp-deepwiki
+
+# Install dependencies
+npm install
+
+# Build the package
+npm run build
+```
+
+#### Direct API Calls
+
+For HTTP transport, you can make direct API calls:
+
+```bash
+curl -X POST http://localhost:3000/mcp \
+  -H "Content-Type: application/json" \
+  -d '{
+    "id": "req-1",
+    "action": "deepwiki_fetch",
+    "params": {
+      "url": "https://deepwiki.com/user/repo",
+      "mode": "aggregate"
+    }
+  }'
+```
+
 ## Configuration
 
 ### Environment Variables
@@ -236,7 +183,7 @@ DEEPWIKI_MAX_RETRIES=5
 DEEPWIKI_RETRY_DELAY=500
 ```
 
-## Docker Deployment
+## Docker Deployment (Untested)
 
 Build and run the Docker image:
 
@@ -261,43 +208,19 @@ docker run -d -p 3000:3000 \
 
 ```bash
 # Install dependencies
-npm install
+pnpm install
 
 # Run in development mode with stdio
-npm run dev-stdio
-
-# Run in development mode with HTTP
-npm run dev-http
-
-# Run in development mode with SSE
-npm run dev-sse
+pnpm run dev-stdio
 
 # Run tests
-npm test
+pnpm test
 
 # Run linter
-npm run lint
+pnpm run lint
 
 # Build the package
-npm run build
-```
-
-### Project Structure
-
-```
-src/
-├── functions/         # Core functionality
-│   ├── __tests__/     # Unit tests
-│   ├── crawler.ts     # Website crawling logic
-│   ├── converter.ts   # HTML to Markdown conversion
-│   ├── types.ts       # TypeScript interfaces & schemas
-│   └── utils.ts       # Utility functions
-├── tools/             # MCP tool definitions
-│   ├── deepwiki.ts    # Deepwiki fetch tool
-│   └── mytool.ts      # Example tool
-├── index.ts           # Main entry point
-├── server.ts          # MCP server setup
-└── types.ts           # Core type definitions
+pnpm run build
 ```
 
 ## Troubleshooting
@@ -320,14 +243,6 @@ src/
    DEEPWIKI_REQUEST_TIMEOUT=60000 DEEPWIKI_MAX_CONCURRENCY=10 npx mcp-deepwiki
    ```
 
-### Debugging
-
-Enable debug logs by setting the environment variable:
-
-```bash
-DEBUG=mcp-deepwiki:* npx mcp-deepwiki
-```
-
 ## Contributing
 
 We welcome contributions! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for details.
@@ -335,3 +250,18 @@ We welcome contributions! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for deta
 ## License
 
 MIT
+
+## Links
+
+- X/Twitter: [@kregenrek](https://x.com/kregenrek)
+- Bluesky: [@kevinkern.dev](https://bsky.app/profile/kevinkern.dev)
+
+## Courses
+- Learn Cursor AI: [Ultimate Cursor Course](https://www.instructa.ai/en/cursor-ai)
+- Learn to build software with AI: [instructa.ai](https://www.instructa.ai)
+
+## See my other projects:
+
+* [AI Prompts](https://github.com/instructa/ai-prompts/blob/main/README.md) - Curated AI Prompts for Cursor AI, Cline, Windsurf and Github Copilot
+* [codefetch](https://github.com/regenrek/codefetch) - Turn code into Markdown for LLMs with one simple terminal command
+* [aidex](https://github.com/regenrek/aidex) A CLI tool that provides detailed information about AI language models, helping developers choose the right model for their needs.# tool-starter

@@ -7,8 +7,38 @@ export const ModeEnum = z.enum(['aggregate', 'pages'])
 /* ---------- request ---------- */
 
 export const FetchRequest = z.object({
-  /** Deepwiki repo URL, eg https://deepwiki.com/user/repo */
-  url: z.string().url(),
+  /**
+   * Deepwiki repo URL, eg https://deepwiki.com/user/repo
+   *
+   * Accepts shorthands like "user/repo" or variants such as
+   * "www.deepwiki.com/…" and adds/normalises them to
+   * "https://deepwiki.com/…".
+   */
+  url: z.preprocess((raw) => {
+    if (typeof raw !== 'string')
+      return raw
+
+    let str = raw.trim()
+
+    // Shorthand "user/repo"
+    const repoPattern = /^[a-zA-Z0-9_.-]+\/[a-zA-Z0-9_.-]+$/
+    if (repoPattern.test(str))
+      str = `https://deepwiki.com/${str}`
+
+    // www → bare domain, keep https
+    if (str.startsWith('http://www.deepwiki.com'))
+      str = str.replace('http://www.deepwiki.com', 'https://deepwiki.com')
+    else if (str.startsWith('https://www.deepwiki.com'))
+      str = str.replace('https://www.deepwiki.com', 'https://deepwiki.com')
+    else if (str.startsWith('www.deepwiki.com'))
+      str = `https://${str.replace(/^www\./, '')}`
+
+    // Missing protocol but starts with deepwiki.com
+    if (!str.startsWith('http') && str.startsWith('deepwiki.com'))
+      str = `https://${str}`
+
+    return str
+  }, z.string().url()),
   /** Crawl depth limit: 0 means only the root page */
   maxDepth: z.number().int().min(0).default(1),
   /** Conversion mode */
