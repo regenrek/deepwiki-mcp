@@ -14,16 +14,45 @@ It takes a Deepwiki URL via MCP, crawls all relevant pages, converts them to Mar
 
 ## Usage
 
+Prompts you can use:
+
+```
+deepwiki fetch url
+deepwiki fetch <name>/<repo>
+```
+
+Fetch complete Documentation (Default)
+```
+use deepwiki https://deepwiki.com/shadcn-ui/ui
+use deepwiki multiple pages https://deepwiki.com/shadcn-ui/ui
+```
+
+Single Page
+```
+use deepwiki fetch single page https://deepwiki.com/tailwindlabs/tailwindcss/2.2-theme-system
+```
+
+Get by shortform
+```
+use deepwiki fetch tailwindlabs/tailwindcss
+```
+
+## Cursor
+
+Add this to `.cursor/mcp.json` file.
+
 ```
 {
   "mcpServers": {
     "mcp-deepwiki": {
       "command": "npx",
-      "args": ["-y", "mcp-deepwiki"]
+      "args": ["-y", "mcp-deepwiki@latest"]
     }
   }
 }
 ```
+
+![Deepwiki Logo](public/deepwiki.jpg)
 
 ### MCP Tool Integration
 
