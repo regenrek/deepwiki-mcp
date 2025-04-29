@@ -2,7 +2,11 @@
   "mcpServers": {
     "mcp-deepwiki": {
       "command": "node",
-      "args": ["./bin/cli.mjs"]
+      "args": ["./bin/cli.mjs2"]
+    },
+    "mcp-deepwiki-live": {
+      "command": "npx",
+      "args": ["-y", "mcp-deepwiki"]
     }
   }
 }

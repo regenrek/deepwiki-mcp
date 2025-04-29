@@ -88,7 +88,7 @@ export async function crawl(options: CrawlOptions): Promise<CrawlResult> {
 
           // naïve link extraction via regex, replaced by DOM parse later
           const linkRe
-            = /href="([^"#]+)(?:#[^"#]*)?"/gi
+            = /href=['"]([^"'#]+)(?:#[^"'#]*)?['"]/gi
           let match: RegExpExecArray | null
           while (true) {
             match = linkRe.exec(htmlStr)
@@ -96,7 +96,8 @@ export async function crawl(options: CrawlOptions): Promise<CrawlResult> {
               break
             try {
               const child = new URL(match[1], url)
-              await enqueue(child, depth + 1)
+              // await enqueue(child, depth + 1)
+              enqueue(child, depth + 1).catch(() => {})
             }
             catch {}
           }

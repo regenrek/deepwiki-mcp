@@ -11,7 +11,7 @@ import { FetchRequest } from '../schemas/deepwiki'
 
 export function deepwikiTool({ mcp }: McpToolContext) {
   mcp.tool(
-    'deepwiki.fetch',
+    'deepwiki_fetch',
     'Crawl a deepwiki.com repo and return Markdown',
     FetchRequest.shape,
     async (input) => {
