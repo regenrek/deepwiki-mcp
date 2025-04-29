@@ -12,38 +12,48 @@ import { FetchRequest } from '../schemas/deepwiki'
 export function deepwikiTool({ mcp }: McpToolContext) {
   mcp.tool(
     'deepwiki_fetch',
-    'Crawl a deepwiki.com repo and return Markdown',
+    'Fetch a deepwiki.com repo and return Markdown',
     FetchRequest.shape,
     async (input) => {
-      // Wrap any payload into the chat-message shape expected by MCP
-      const toMessage = (body: unknown) => ({
-        content: [
-          {
-            type: 'text',
-            text: JSON.stringify(body),
-          },
-        ],
-      })
-
-      const parse = FetchRequest.safeParse(input)
+      // Normalize the URL to support short forms
+      const normalizedInput = { ...input }
+      if (typeof normalizedInput.url === 'string') {
+        let url = normalizedInput.url.trim()
+        // If it already looks like a URL, leave it
+        if (!/^https?:\/\//.test(url)) {
+          // If only repo is given, e.g. 'repo', prepend default user
+          if (/^[^/]+$/.test(url)) {
+            url = `defaultuser/${url}` // TODO: Replace 'defaultuser' with actual logic if needed
+          }
+          // Now url is 'name/repo'
+          url = `https://deepwiki.com/${url}`
+        }
+        normalizedInput.url = url
+      }
+      const parse = FetchRequest.safeParse(normalizedInput)
       if (!parse.success) {
-        const flattened = parse.error.flatten()
-        const hasModeError = flattened.fieldErrors?.mode?.length
         const err: z.infer<typeof ErrorEnvelope> = {
           status: 'error',
-          // Treat an invalid mode the same way tests expect for a disallowed domain
-          code: hasModeError ? 'DOMAIN_NOT_ALLOWED' : 'VALIDATION',
+          code: 'VALIDATION',
           message: 'Request failed schema validation',
-          details: flattened,
+          details: parse.error.flatten(),
         }
-        return toMessage(err)
+        return err
       }
 
       const req = parse.data
       const root = new URL(req.url)
 
-      const allowedHostnames = ['deepwiki.com', 'www.deepwiki.com']
-      if (!allowedHostnames.includes(root.hostname)) {
+      if (req.maxDepth > 1) {
+        const err: z.infer<typeof ErrorEnvelope> = {
+          status: 'error',
+          code: 'VALIDATION',
+          message: 'maxDepth > 1 is not allowed',
+        }
+        return err
+      }
+
+      if (root.hostname !== 'deepwiki.com') {
         const err: z.infer<typeof ErrorEnvelope> = {
           status: 'error',
           code: 'DOMAIN_NOT_ALLOWED',
@@ -52,11 +62,15 @@ export function deepwikiTool({ mcp }: McpToolContext) {
         return err
       }
 
-      // Crawl without emitting progress events (avoids SDK schema mismatch)
+      // Progress emitter
+      function emitProgress(e: any) {
+        // Progress reporting is not supported in this context because McpServer does not have a sendEvent method.
+      }
+
       const crawlResult = await crawl({
         root,
         maxDepth: req.maxDepth,
-        emit: () => {}, // no-op
+        emit: emitProgress,
         verbose: req.verbose,
       })
 
@@ -68,17 +82,12 @@ export function deepwikiTool({ mcp }: McpToolContext) {
         })),
       )
 
-      const success = {
-        status: crawlResult.errors.length ? 'partial' : 'ok',
-        // Convert "pages" to singular "page" to satisfy client tests
-        mode: req.mode === 'pages' ? 'page' : req.mode,
-        pages,
-        totalBytes: crawlResult.bytes,
-        totalElapsedMs: crawlResult.elapsedMs,
-        errors: crawlResult.errors.length ? crawlResult.errors : undefined,
+      return {
+        content: pages.map(page => ({
+          type: 'text',
+          text: `# ${page.path}\n\n${page.markdown}`,
+        })),
       }
-
-      return toMessage(success)
     },
   )
 }

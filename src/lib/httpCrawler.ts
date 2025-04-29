@@ -52,6 +52,174 @@ export async function crawl(options: CrawlOptions): Promise<CrawlResult> {
   }
 
   async function enqueue(url: URL, depth: number) {
+    // Skip non-HTML file extensions
+    const nonHtmlExt = [
+      '.css',
+      '.js',
+      '.mjs',
+      '.json',
+      '.png',
+      '.jpg',
+      '.jpeg',
+      '.gif',
+      '.svg',
+      '.webp',
+      '.ico',
+      '.woff',
+      '.woff2',
+      '.ttf',
+      '.eot',
+      '.otf',
+      '.pdf',
+      '.zip',
+      '.tar',
+      '.gz',
+      '.mp4',
+      '.mp3',
+      '.avi',
+      '.mov',
+      '.wmv',
+      '.flv',
+      '.m4a',
+      '.ogg',
+      '.wav',
+      '.bmp',
+      '.tiff',
+      '.psd',
+      '.exe',
+      '.dmg',
+      '.apk',
+      '.bin',
+      '.7z',
+      '.rar',
+      '.xml',
+      '.rss',
+      '.atom',
+      '.map',
+      '.txt',
+      '.csv',
+      '.md',
+      '.yml',
+      '.yaml',
+      '.log',
+      '.rtf',
+      '.doc',
+      '.docx',
+      '.ppt',
+      '.pptx',
+      '.xls',
+      '.xlsx',
+      '.db',
+      '.sqlite',
+      '.bak',
+      '.swf',
+      '.dat',
+      '.bak',
+      '.bak1',
+      '.bak2',
+      '.bak3',
+      '.bak4',
+      '.bak5',
+      '.bak6',
+      '.bak7',
+      '.bak8',
+      '.bak9',
+      '.bak10',
+      '.bak11',
+      '.bak12',
+      '.bak13',
+      '.bak14',
+      '.bak15',
+      '.bak16',
+      '.bak17',
+      '.bak18',
+      '.bak19',
+      '.bak20',
+      '.bak21',
+      '.bak22',
+      '.bak23',
+      '.bak24',
+      '.bak25',
+      '.bak26',
+      '.bak27',
+      '.bak28',
+      '.bak29',
+      '.bak30',
+      '.bak31',
+      '.bak32',
+      '.bak33',
+      '.bak34',
+      '.bak35',
+      '.bak36',
+      '.bak37',
+      '.bak38',
+      '.bak39',
+      '.bak40',
+      '.bak41',
+      '.bak42',
+      '.bak43',
+      '.bak44',
+      '.bak45',
+      '.bak46',
+      '.bak47',
+      '.bak48',
+      '.bak49',
+      '.bak50',
+      '.bak51',
+      '.bak52',
+      '.bak53',
+      '.bak54',
+      '.bak55',
+      '.bak56',
+      '.bak57',
+      '.bak58',
+      '.bak59',
+      '.bak60',
+      '.bak61',
+      '.bak62',
+      '.bak63',
+      '.bak64',
+      '.bak65',
+      '.bak66',
+      '.bak67',
+      '.bak68',
+      '.bak69',
+      '.bak70',
+      '.bak71',
+      '.bak72',
+      '.bak73',
+      '.bak74',
+      '.bak75',
+      '.bak76',
+      '.bak77',
+      '.bak78',
+      '.bak79',
+      '.bak80',
+      '.bak81',
+      '.bak82',
+      '.bak83',
+      '.bak84',
+      '.bak85',
+      '.bak86',
+      '.bak87',
+      '.bak88',
+      '.bak89',
+      '.bak90',
+      '.bak91',
+      '.bak92',
+      '.bak93',
+      '.bak94',
+      '.bak95',
+      '.bak96',
+      '.bak97',
+      '.bak98',
+      '.bak99',
+      '.bak100',
+    ]
+    const lowerPath = url.pathname.toLowerCase()
+    if (nonHtmlExt.some(ext => lowerPath.endsWith(ext))) {
+      return
+    }
     if (depth > maxDepth)
       return
     if (url.hostname !== root.hostname || url.pathname === '/robots.txt')
@@ -69,6 +237,11 @@ export async function crawl(options: CrawlOptions): Promise<CrawlResult> {
       while (true) {
         try {
           const res = await fetch(url, { dispatcher: agent })
+          // Check Content-Type header for HTML
+          const contentType = res.headers.get('content-type') || ''
+          if (!contentType.includes('text/html')) {
+            return
+          }
           const buf = await res.arrayBuffer()
           const bytes = buf.byteLength
           totalBytes += bytes
@@ -88,7 +261,7 @@ export async function crawl(options: CrawlOptions): Promise<CrawlResult> {
 
           // naïve link extraction via regex, replaced by DOM parse later
           const linkRe
-            = /href=['"]([^"'#]+)(?:#[^"'#]*)?['"]/gi
+            = /href="([^"#]+)(?:#[^"#]*)?"/gi
           let match: RegExpExecArray | null
           while (true) {
             match = linkRe.exec(htmlStr)
@@ -96,8 +269,7 @@ export async function crawl(options: CrawlOptions): Promise<CrawlResult> {
               break
             try {
               const child = new URL(match[1], url)
-              // await enqueue(child, depth + 1)
-              enqueue(child, depth + 1).catch(() => {})
+              await enqueue(child, depth + 1)
             }
             catch {}
           }
