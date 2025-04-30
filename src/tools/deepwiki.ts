@@ -7,6 +7,7 @@ import type {
 import type { McpToolContext } from '../types'
 import { htmlToMarkdown } from '../converter/htmlToMarkdown'
 import { resolveRepo } from '../utils/resolveRepoFetch'
+import { extractKeyword } from '../utils/extractKeyword'
 import { crawl } from '../lib/httpCrawler'
 import { FetchRequest } from '../schemas/deepwiki'
 
@@ -23,6 +24,11 @@ export function deepwikiTool({ mcp }: McpToolContext) {
 
         // Only transform when it is not already an explicit HTTP(S) URL
         if (!/^https?:\/\//.test(url)) {
+          // Try to extract a library keyword from a free form phrase
+          const extracted = extractKeyword(url)
+          if (extracted) {
+            url = extracted
+          }
           // Single keyword with no slash – try to resolve against GitHub
           if (/^[^/]+$/.test(url)) {
             try {

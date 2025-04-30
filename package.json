@@ -70,6 +70,8 @@
     "remark-gfm": "^4.0.1",
     "remark-stringify": "^11.0.0",
     "robots-parser": "^3.0.1",
+    "wink-eng-lite-web-model": "^1.0.0",
+    "wink-nlp": "^1.10.0",
     "undici": "^7.8.0",
     "unified": "^11.0.5",
     "unist-util-visit": "^5.0.0",

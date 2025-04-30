@@ -68,6 +68,12 @@ importers:
       unist-util-visit:
         specifier: ^5.0.0
         version: 5.0.0
+      wink-eng-lite-web-model:
+        specifier: ^1.0.0
+        version: 1.8.1
+      wink-nlp:
+        specifier: ^1.10.0
+        version: 1.14.3
       zod:
         specifier: ^3.24.3
         version: 3.24.3
@@ -2931,6 +2937,13 @@ packages:
     resolution: {integrity: sha512-hUrmaWBdVDcxvYqnyh09zunKzROWjbZTiNy8dBEjkS7ehEDQibXJ7XvlmtbwuTclUiIyN+CyXQD4Vmko8fNm8w==}
     engines: {node: '>=8'}
     hasBin: true
+
+  wink-eng-lite-web-model@1.8.1:
+    resolution: {integrity: sha512-M2tSOU/rVNkDj8AS8IoKJaM7apJJjS0cN+hE8CPazfnB4A/ojyc9+7RMPk18UOiIdSyWk7MR6w8z9lWix2l5tA==}
+    engines: {node: '>=16.0.0'}
+
+  wink-nlp@1.14.3:
+    resolution: {integrity: sha512-lvY5iCs3T8I34F8WKS70+2P0U9dWLn3vdPf/Z+m2VK14N7OmqnPzmHfh3moHdusajoQ37Em39z0IZB9K4x/96A==}
 
   word-wrap@1.2.5:
     resolution: {integrity: sha512-BN22B5eaMMI9UMtjrGd5g5eCYPpCPDUy0FJXbYsaT5zYxjFOckS53SQDE3pWkVoWpHXVb3BrYcEN4Twa55B5cA==}
@@ -6169,6 +6182,10 @@ snapshots:
     dependencies:
       siginfo: 2.0.0
       stackback: 0.0.2
+
+  wink-eng-lite-web-model@1.8.1: {}
+
+  wink-nlp@1.14.3: {}
 
   word-wrap@1.2.5: {}
 
