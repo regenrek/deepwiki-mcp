@@ -6,6 +6,7 @@ import type {
 } from '../schemas/deepwiki'
 import type { McpToolContext } from '../types'
 import { htmlToMarkdown } from '../converter/htmlToMarkdown'
+import { resolveRepo } from '../utils/resolveRepoFetch'
 import { crawl } from '../lib/httpCrawler'
 import { FetchRequest } from '../schemas/deepwiki'
 
@@ -19,15 +20,24 @@ export function deepwikiTool({ mcp }: McpToolContext) {
       const normalizedInput = { ...input }
       if (typeof normalizedInput.url === 'string') {
         let url = normalizedInput.url.trim()
-        // If it already looks like a URL, leave it
+
+        // Only transform when it is not already an explicit HTTP(S) URL
         if (!/^https?:\/\//.test(url)) {
-          // If only repo is given, e.g. 'repo', prepend default user
+          // Single keyword with no slash – try to resolve against GitHub
           if (/^[^/]+$/.test(url)) {
-            url = `defaultuser/${url}` // TODO: Replace 'defaultuser' with actual logic if needed
+            try {
+              const repo = await resolveRepo(url) // "owner/repo"
+              url = repo
+            }
+            catch {
+              // Fallback to previous behaviour for backward compatibility
+              url = `defaultuser/${url}` // TODO: replace defaultuser logic
+            }
           }
-          // Now url is 'name/repo'
+          // At this point url should be "owner/repo"
           url = `https://deepwiki.com/${url}`
         }
+
         normalizedInput.url = url
       }
       const parse = FetchRequest.safeParse(normalizedInput)

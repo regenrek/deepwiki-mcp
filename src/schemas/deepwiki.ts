@@ -8,7 +8,7 @@ export const ModeEnum = z.enum(['aggregate', 'pages'])
 
 export const FetchRequest = z.object({
   /** Deepwiki repo URL, eg https://deepwiki.com/user/repo */
-  url: z.string().describe('should be a url or user/repo name'),
+  url: z.string().describe('should be a URL, owner/repo name, or single library keyword'),
   /** Crawl depth limit: 0 means only the root page */
   maxDepth: z.number().int().min(0).max(1).default(1).describe('Can fetch a single site => maxDepth 0 or multiple/all sites => maxDepth 1'),
   /** Conversion mode */
