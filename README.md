@@ -11,7 +11,7 @@ It takes a Deepwiki URL via MCP, crawls all relevant pages, converts them to Mar
 - 🔗 **Link Rewriting**: Adjusts links to work in Markdown
 - 📄 **Multiple Output Formats**: Get one document or structured pages
 - 🚀 **Performance**: Fast crawling with adjustable concurrency and depth
-- **NEW**: It's now possible to search just for the library name (experimental)
+- **NLP**: It's to search just for the library name
 
 ## Usage
 
@@ -26,7 +26,7 @@ deepwiki fetch how can i create new blocks in shadcn?
 ```
 
 ```
-deepwiki fetch ow can i use gpt-image-1 with "vercel ai" sdk
+deepwiki fetch i want to understand how X works
 ```
 
 Fetch complete Documentation (Default)
