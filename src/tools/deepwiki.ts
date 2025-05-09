@@ -14,7 +14,7 @@ import { FetchRequest } from '../schemas/deepwiki'
 export function deepwikiTool({ mcp }: McpToolContext) {
   mcp.tool(
     'deepwiki_fetch',
-    'Fetch a deepwiki.com repo and return Markdown',
+    'Fetch a deepwiki.org repo and return Markdown',
     FetchRequest.shape,
     async (input) => {
       // Normalize the URL to support short forms
@@ -41,7 +41,7 @@ export function deepwikiTool({ mcp }: McpToolContext) {
             }
           }
           // At this point url should be "owner/repo"
-          url = `https://deepwiki.com/${url}`
+          url = `https://deepwiki.org/${url}`
         }
 
         normalizedInput.url = url
@@ -69,11 +69,11 @@ export function deepwikiTool({ mcp }: McpToolContext) {
         return err
       }
 
-      if (root.hostname !== 'deepwiki.com') {
+      if (root.hostname !== 'deepwiki.org') {
         const err: z.infer<typeof ErrorEnvelope> = {
           status: 'error',
           code: 'DOMAIN_NOT_ALLOWED',
-          message: 'Only deepwiki.com domains are allowed',
+          message: 'Only deepwiki.org domains are allowed',
         }
         return err
       }
