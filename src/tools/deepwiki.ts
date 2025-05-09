@@ -24,13 +24,22 @@ export function deepwikiTool({ mcp }: McpToolContext) {
 
         // Only transform when it is not already an explicit HTTP(S) URL
         if (!/^https?:\/\//.test(url)) {
-          // Try to extract a library keyword from a free form phrase
-          const extracted = extractKeyword(url)
-          if (extracted) {
-            url = extracted
+          // Check if the URL is already in the owner/repo format
+          if (/^[^/]+\/[^/]+$/.test(url)) {
+            // Already in owner/repo format, keep it as is
+            // Just prefix with deepwiki.com
           }
-          // Single keyword with no slash – try to resolve against GitHub
-          if (/^[^/]+$/.test(url)) {
+          // Single word/term with no slash - process differently
+          else if (/^[^/]+$/.test(url)) {
+            // For single words, first try to extract a meaningful keyword if the input has spaces
+            if (url.includes(' ')) {
+              const extracted = extractKeyword(url)
+              if (extracted) {
+                url = extracted
+              }
+            }
+
+            // Try to resolve the single term against GitHub
             try {
               const repo = await resolveRepo(url) // "owner/repo"
               url = repo
@@ -40,6 +49,21 @@ export function deepwikiTool({ mcp }: McpToolContext) {
               url = `defaultuser/${url}` // TODO: replace defaultuser logic
             }
           }
+          // Other formats (phrases with slashes that don't match owner/repo)
+          else {
+            // Try to extract a library keyword from a free form phrase
+            const extracted = extractKeyword(url)
+            if (extracted) {
+              // Resolve the extracted keyword
+              try {
+                const repo = await resolveRepo(extracted)
+                url = repo
+              } catch {
+                url = `defaultuser/${extracted}`
+              }
+            }
+          }
+
           // At this point url should be "owner/repo"
           url = `https://deepwiki.com/${url}`
         }
