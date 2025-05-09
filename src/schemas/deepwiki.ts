@@ -7,7 +7,7 @@ export const ModeEnum = z.enum(['aggregate', 'pages'])
 /* ---------- request ---------- */
 
 export const FetchRequest = z.object({
-  /** Deepwiki repo URL, eg https://deepwiki.com/user/repo */
+  /** Deepwiki repo URL, eg https://deepwiki.org/user/repo */
   url: z.string().describe('should be a URL, owner/repo name (e.g. "vercel/ai"), a two-word "owner repo" form (e.g. "vercel ai"), or a single library keyword'),
   /** Crawl depth limit: 0 means only the root page */
   maxDepth: z.number().int().min(0).max(1).default(1).describe('Can fetch a single site => maxDepth 0 or multiple/all sites => maxDepth 1'),

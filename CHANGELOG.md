@@ -22,7 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - HTML-to-Markdown conversion with sanitization of headers, footers, navigation, and ads
 - Support for both aggregate mode (single document) and pages mode (structured data)
 - Link rewriting to maintain functional references in output Markdown
-- Domain safety restrictions to only allow deepwiki.com URLs
+- Domain safety restrictions to only allow deepwiki.org URLs
 - Repo scope limitation to prevent crawling outside the target repository
 - Progress streaming for real-time updates during crawling
 - Configurable depth limiting via maxDepth parameter
