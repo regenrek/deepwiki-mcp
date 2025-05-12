@@ -7,7 +7,7 @@ import { htmlToMarkdown } from '../src/converter/htmlToMarkdown'
 import { crawl } from '../src/lib/httpCrawler'
 
 const OUTPUT_DIR = join(__dirname, 'output')
-const TARGET_URL = 'https://deepwiki.org/regenrek/codefetch'
+const TARGET_URL = 'https://deepwiki.com/regenrek/codefetch'
 const ROOT_URL = new URL(TARGET_URL)
 const ROOT_PATH = ROOT_URL.pathname
 
@@ -50,7 +50,7 @@ describe('crawl', () => {
     }
   })
 
-  it('crawls deepwiki.org (pages mode) and converts to markdown', async () => {
+  it('crawls deepwiki.com (pages mode) and converts to markdown', async () => {
     try {
       const { html, errors } = await crawl({
         root: ROOT_URL,
@@ -73,7 +73,7 @@ describe('crawl', () => {
     }
   }, 30000)
 
-  it('crawls deepwiki.org (aggregate mode) and converts to markdown', async () => {
+  it('crawls deepwiki.com (aggregate mode) and converts to markdown', async () => {
     try {
       const { html, errors } = await crawl({
         root: ROOT_URL,
@@ -102,7 +102,7 @@ describe('crawl depth', () => {
     mkdirSync(OUTPUT_DIR, { recursive: true })
   })
 
-  // it.each([0, 1, 2])('crawls deepwiki.org with maxDepth %i', async (maxDepth) => {
+  // it.each([0, 1, 2])('crawls deepwiki.com with maxDepth %i', async (maxDepth) => {
   //   try {
   //     const { html, errors } = await crawl({
   //       root: ROOT_URL,
@@ -123,7 +123,7 @@ describe('crawl depth', () => {
   //     expect.fail(`Test (depth ${maxDepth}) threw an error: ${error}`)
   //   }
   // }, 30000 * 5)
-  it.each([0, 1, 2])('crawls deepwiki.org with maxDepth %i', async (maxDepth) => {
+  it.each([0, 1, 2])('crawls deepwiki.com with maxDepth %i', async (maxDepth) => {
     try {
       const { html, errors } = await crawl({
         root: ROOT_URL,

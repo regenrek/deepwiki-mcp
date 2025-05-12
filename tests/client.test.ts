@@ -64,7 +64,7 @@ describe('deepWiki Tool Tests', () => {
     }
   })
 
-  it('should fetch content from a deepwiki.org URL', async () => {
+  it('should fetch content from a deepwiki.com URL', async () => {
     await client.connectServer() // Connect with default settings
 
     // Verify deepwiki.fetch tool is available
@@ -74,7 +74,7 @@ describe('deepWiki Tool Tests', () => {
 
     // Call the deepwiki.fetch tool
     const result = await client.callTool('deepwiki.fetch', {
-      url: 'https://deepwiki.org/antiwork/gumroad/3.1-navigation-components',
+      url: 'https://deepwiki.com/antiwork/gumroad/3.1-navigation-components',
       maxDepth: 1,
       mode: 'pages',
     })
@@ -84,7 +84,7 @@ describe('deepWiki Tool Tests', () => {
     expect(result.content[0].text).toMatch(/Navigation Components/)
   }, 30000) // Increase timeout for network request
 
-  it('should return error for non-deepwiki.org URL', async () => {
+  it('should return error for non-deepwiki.com URL', async () => {
     await client.connectServer()
 
     // Expect the call to reject with a specific error structure
