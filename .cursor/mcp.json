@@ -6,7 +6,7 @@
     },
     "mcp-deepwiki-live": {
       "command": "npx",
-      "args": ["-y", "mcp-deepwiki@latest"]
+      "args": ["-y", "mcp-deepwiki@0.0.8"]
     }
   }
 }
