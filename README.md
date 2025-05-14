@@ -6,7 +6,7 @@ It takes a Deepwiki URL via MCP, crawls all relevant pages, converts them to Mar
 
 ## Features
 
-- 🔒 **Domain Safety**: Only processes URLs from deepwiki.org
+- 🔒 **Domain Safety**: Only processes URLs from deepwiki.com
 - 🧹 **HTML Sanitization**: Strips headers, footers, navigation, scripts, and ads
 - 🔗 **Link Rewriting**: Adjusts links to work in Markdown
 - 📄 **Multiple Output Formats**: Get one document or structured pages
@@ -31,13 +31,13 @@ deepwiki fetch i want to understand how X works
 
 Fetch complete Documentation (Default)
 ```
-use deepwiki https://deepwiki.org/shadcn-ui/ui
-use deepwiki multiple pages https://deepwiki.org/shadcn-ui/ui
+use deepwiki https://deepwiki.com/shadcn-ui/ui
+use deepwiki multiple pages https://deepwiki.com/shadcn-ui/ui
 ```
 
 Single Page
 ```
-use deepwiki fetch single page https://deepwiki.org/tailwindlabs/tailwindcss/2.2-theme-system
+use deepwiki fetch single page https://deepwiki.com/tailwindlabs/tailwindcss/2.2-theme-system
 ```
 
 Get by shortform
@@ -80,7 +80,7 @@ The package registers a tool named `deepwiki_fetch` that you can use with any MC
 {
   "action": "deepwiki_fetch",
   "params": {
-    "url": "https://deepwiki.org/user/repo",
+    "url": "https://deepwiki.com/user/repo",
     "mode": "aggregate",
     "maxDepth": "1"
   }
@@ -134,7 +134,7 @@ The package registers a tool named `deepwiki_fetch` that you can use with any MC
 {
   "status": "error",
   "code": "DOMAIN_NOT_ALLOWED",
-  "message": "Only deepwiki.org domains are allowed"
+  "message": "Only deepwiki.com domains are allowed"
 }
 ```
 
@@ -146,7 +146,7 @@ The package registers a tool named `deepwiki_fetch` that you can use with any MC
   "data": "# Page Title\n\nPage content...",
   "errors": [
     {
-      "url": "https://deepwiki.org/user/repo/page2",
+      "url": "https://deepwiki.com/user/repo/page2",
       "reason": "HTTP error: 404"
     }
   ],
@@ -161,9 +161,9 @@ The package registers a tool named `deepwiki_fetch` that you can use with any MC
 When using the tool, you'll receive progress events during crawling:
 
 ```
-Fetched https://deepwiki.org/user/repo: 12500 bytes in 450ms (status: 200)
-Fetched https://deepwiki.org/user/repo/page1: 8750 bytes in 320ms (status: 200)
-Fetched https://deepwiki.org/user/repo/page2: 6200 bytes in 280ms (status: 200)
+Fetched https://deepwiki.com/user/repo: 12500 bytes in 450ms (status: 200)
+Fetched https://deepwiki.com/user/repo/page1: 8750 bytes in 320ms (status: 200)
+Fetched https://deepwiki.com/user/repo/page2: 6200 bytes in 280ms (status: 200)
 ```
 
 ## Local Development - Installation
@@ -206,7 +206,7 @@ curl -X POST http://localhost:3000/mcp \
     "id": "req-1",
     "action": "deepwiki_fetch",
     "params": {
-      "url": "https://deepwiki.org/user/repo",
+      "url": "https://deepwiki.com/user/repo",
       "mode": "aggregate"
     }
   }'

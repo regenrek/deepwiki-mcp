@@ -22,7 +22,7 @@ const SearchRequest = FetchRequest.extend({
 export function deepwikiSearchTool({ mcp }: McpToolContext) {
   mcp.tool(
     'deepwiki_search',
-    `Download pages from a deepwiki.org, look for a case-insensitive
+    `Download pages from a deepwiki.com, look for a case-insensitive
 substring, and return up to maxMatches short snippets with the match
 wrapped in **bold**.
 
