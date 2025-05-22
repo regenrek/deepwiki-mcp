@@ -1,3 +1,5 @@
+[![MseeP.ai Security Assessment Badge](https://mseep.net/pr/regenrek-deepwiki-mcp-badge.png)](https://mseep.ai/app/regenrek-deepwiki-mcp)
+
 # Deepwiki MCP Server
 
 This is an **unofficial Deepwiki MCP Server**
