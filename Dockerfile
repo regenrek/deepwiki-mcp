@@ -30,7 +30,7 @@ ENV NODE_ENV=production
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/bin ./bin
-COPY --from=builder /app/package.json ./package.json # Good practice to include
+COPY --from=builder /app/package.json ./package.json
 
 # Set the entrypoint to your CLI script
 ENTRYPOINT ["node", "bin/cli.mjs"]
