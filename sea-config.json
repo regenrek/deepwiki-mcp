@@ -1,0 +1,5 @@
+{
+    "main": "./dist/cli.js",
+    "output": "sea-prep.blob",
+    "resources": []
+}
