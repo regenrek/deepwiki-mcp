@@ -95,6 +95,8 @@
     "unbuild": "^3.5.0",
     "vite": "^6.3.1",
     "vitest": "^3.1.1",
-    "postject": "^1.1.1"
+    "postject": "^1.1.1",
+    "@types/puppeteer": "^8.0.4",
+    "@types/robots-parser": "^1.0.1"
   }
 }
