@@ -11,3 +11,28 @@ export interface McpServerOptions {
 }
 
 export type Tools = (context: McpToolContext) => void
+
+// -----------------------------
+// StdIO microservice protocol
+// -----------------------------
+
+export interface StdioRequest {
+  id: string | number
+  url: string
+  as?: 'html' | 'markdown'
+  heavyRetry?: boolean
+}
+
+export interface StdioResponseSuccess {
+  id: string | number
+  ok: true
+  payload: string
+}
+
+export interface StdioResponseError {
+  id?: string | number
+  ok: false
+  error: string
+}
+
+export type StdioResponse = StdioResponseSuccess | StdioResponseError
