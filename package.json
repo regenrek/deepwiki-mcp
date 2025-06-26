@@ -23,34 +23,39 @@
   ],
   "exports": {
     ".": "./dist/index.mjs",
-    "./cli": "./bin/cli.mjs"
+    "./cli": "./dist/cli.js"
   },
   "bin": {
-    "mcp-instruct": "./bin/cli.mjs"
+    "deepwiki-mcp": "./dist/cli.js"
   },
   "files": [
     "bin",
-    "dist"
+    "dist",
+    "scripts/postinstall.cjs"
   ],
   "engines": {
     "node": ">=18.0.0"
   },
   "scripts": {
-    "build": "unbuild && npm run chmod-run",
-    "chmod-run": "node -e \"fs.chmodSync('dist/index.mjs', '755'); if (require('fs').existsSync('dist/cli.mjs')) require('fs').chmodSync('dist/cli.mjs', '755');\"",
-    "start": "nodemon --exec 'tsx src/index.ts'",
+    "postinstall": "node scripts/postinstall.cjs",
+    "build": "node scripts/bundle.mjs && npm run chmod-run",
+    "chmod-run": "node -e \"fs.chmodSync('dist/cli.js', '755'); if (require('fs').existsSync('dist/index.mjs')) require('fs').chmodSync('dist/index.mjs', '755');\"",
+    "start": "node dist/cli.js",
     "dev:prepare": "nr build",
     "inspect": "npx @modelcontextprotocol/inspector@latest",
     "dev": "npx concurrently 'unbuild --stub' 'npm run inspect'",
-    "run-cli": "node bin/cli.mjs",
-    "dev-stdio": "npx concurrently 'npm run run-cli' 'npm run inspect node ./bin/cli.mjs'",
-    "dev-http": "npx concurrently 'npm run run-cli -- --http --port 4200' 'npm run inspect http://localhost:4200/mcp'",
-    "dev-sse": "npx concurrently 'npm run run-cli -- --sse --port 4201' 'npm run inspect http://localhost:4201/sse'",
+    "run-cli": "node dist/cli.js",
+    "dev-stdio": "npx concurrently 'npm run run-cli' 'npm run inspect node ./dist/cli.js'",
     "lint": "eslint",
     "lint:fix": "eslint --fix",
     "typecheck": "tsc --noEmit",
     "test": "vitest",
-    "release": "tsx scripts/release.ts"
+    "test:smoke": "vitest run tests/smoke.spec.ts",
+    "test:regression": "vitest run tests/regression.spec.ts",
+    "release": "tsx scripts/release.ts",
+    "sea:prepare": "node --experimental-sea-config sea-config.json",
+    "sea:build": "npm run build && npm run sea:prepare && node scripts/build-sea.mjs",
+    "sea": "npm run sea:build"
   },
   "dependencies": {
     "@chatmcp/sdk": "^1.0.6",
@@ -62,9 +67,10 @@
     "hast-util-from-html": "^2.0.3",
     "hast-util-sanitize": "^5.0.2",
     "linkedom": "^0.18.9",
-    "mcp-deepwiki": "^0.0.9",
     "ofetch": "^1.4.1",
-    "p-queue": "^8.1.0",
+    "p-limit": "^5.0.0",
+    "playwright-core": "^1.48.0",
+    "puppeteer-core": "^23.10.0",
     "rehype-parse": "^9.0.1",
     "rehype-remark": "^10.0.1",
     "rehype-sanitize": "^6.0.0",

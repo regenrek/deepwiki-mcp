@@ -3,6 +3,7 @@ node_modules/
 
 # TypeScript output
 dist/
+dist-ssr
 
 # Environment variables
 .env
@@ -12,8 +13,12 @@ dist/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
 
 # Editor directories and files
+.vscode/*
+!.vscode/extensions.json
 .idea/
 *.swp
 *.swo
@@ -26,3 +31,19 @@ llms_*.txt
 
 .hidden
 repomix-output.xml
+
+# Build directories
+.unbuild
+
+# Lightpanda binary
+bin/lightpanda
+
+# Test results
+nightly-test-results.json
+test-results/
+coverage/
+
+# SEA artifacts
+sea-prep.blob
+deepwiki-mcp
+deepwiki-mcp.exe
