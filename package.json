@@ -97,6 +97,10 @@
     "vitest": "^3.1.1",
     "postject": "^1.1.1",
     "@types/puppeteer": "^8.0.4",
-    "@types/robots-parser": "^1.0.1"
+    "@types/robots-parser": "^1.0.1",
+    "@types/puppeteer-core": "^22.0.0",
+    "@types/playwright-core": "^1.44.0",
+    "@types/vitest": "^0.34.0",
+    "@modelcontextprotocol/sdk": "^1.9.0"
   }
 }
