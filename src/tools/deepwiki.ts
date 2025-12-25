@@ -16,6 +16,10 @@ export function deepwikiTool({ mcp }: McpToolContext) {
     'deepwiki_fetch',
     'Fetch a deepwiki.com repo and return Markdown',
     FetchRequest.shape,
+    {
+      title: 'Fetch Deepwiki Content',
+      readOnlyHint: true,
+    },
     async (input) => {
       // Normalize the URL to support short forms
       const normalizedInput = { ...input }

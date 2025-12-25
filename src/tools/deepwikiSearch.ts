@@ -36,6 +36,10 @@ Optional:
   • mode     – "aggregate" | "pages" (affects link rewriting only)
   • verbose  – log progress to stderr`,
     SearchRequest.shape,
+    {
+      title: 'Search Deepwiki Content',
+      readOnlyHint: true,
+    },
     async (raw) => {
       /* Helper to wrap everything into the MCP chat-message envelope */
       const toMsg = (body: unknown) => ({
