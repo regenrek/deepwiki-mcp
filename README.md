@@ -2,7 +2,7 @@
 
 **Maintenance has ended.** The unofficial `mcp-deepwiki` npm package is deprecated.
 
-In version 0.0.10, starting the server with `--sse` or `--http` opens a network listener without restricting it to localhost or requiring authentication. Version 0.0.11 disables both flags and supports local stdio only.
+In version 0.0.10, starting the server with `--sse` or `--http` opens a network listener without restricting it to localhost or requiring authentication. Version 0.0.12 disables both flags and supports local stdio only.
 
 If you use either network mode, stop the running process. To migrate, remove the old `mcp-deepwiki` startup entry from your client and follow the [official DeepWiki MCP setup guide](https://docs.devin.ai/work-with-devin/deepwiki-mcp).
 
