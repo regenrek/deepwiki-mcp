@@ -1,6 +1,13 @@
 # Deepwiki MCP Server
 
-> ⚠️ **IMPORTANT NOTICE**: This server is currently not working since DeepWiki has cut off the possibility to scrape it. We recommend using the official DeepWiki MCP server at https://docs.devin.ai/work-with-devin/deepwiki-mcp for the time being.
+**Maintenance has ended.** The unofficial `mcp-deepwiki` npm package is deprecated and will receive no security updates.
+
+In version 0.0.10, starting the server with `--sse` or `--http` opens a network listener without restricting it to localhost or requiring authentication. The default stdio mode does not open a network listener.
+
+If you use either network mode, stop the running process. To migrate, remove the old `mcp-deepwiki` startup entry from your client and follow the [official DeepWiki MCP setup guide](https://docs.devin.ai/work-with-devin/deepwiki-mcp).
+
+<details>
+<summary>Historical documentation for the discontinued server</summary>
 
 This is an **unofficial Deepwiki MCP Server**
 
@@ -295,6 +302,8 @@ pnpm run build
 ## Contributing
 
 We welcome contributions! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for details.
+
+</details>
 
 ## License
 
