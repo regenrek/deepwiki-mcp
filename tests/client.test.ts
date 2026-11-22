@@ -1,3 +1,4 @@
+import { spawnSync } from 'node:child_process'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { afterEach, beforeEach, describe, expect, it } from 'vitest'
@@ -10,35 +11,39 @@ const __dirname = path.dirname(__filename)
 // Then down to packages/cli/bin/mcpn.mjs
 const cliEntryPointPath = path.resolve(__dirname, '../bin/cli.mjs')
 
-describe('mCP Client Tests', () => {
-  let client: McpTestClient
-
-  beforeEach(() => {
-    console.log('cliEntryPointPath', cliEntryPointPath)
-
-    client = new McpTestClient({
-      cliEntryPoint: cliEntryPointPath, // Use the dynamically resolved path
+describe('cli transport selection', () => {
+  it.each([
+    ['--http', '--port', '0', '--endpoint', '/mcp'],
+    ['--sse', '--port', '0'],
+    ['--stdio', '--http', '--sse'],
+  ])('rejects network transport flags (%s)', (...args) => {
+    const result = spawnSync(process.execPath, [cliEntryPointPath, ...args], {
+      encoding: 'utf8',
+      timeout: 3000,
     })
-  })
 
-  afterEach(async () => {
+    expect(result.error).toBeUndefined()
+    expect(result.status).toBe(1)
+    expect(result.stdout).toBe('')
+    expect(result.stderr).toContain('https://docs.devin.ai/work-with-devin/deepwiki-mcp')
+  })
+})
+
+describe('stdio client', () => {
+  it.each([
+    { mode: 'default', args: [] },
+    { mode: 'explicit', args: ['--stdio'] },
+  ])('lists tools over $mode stdio', async ({ args }) => {
+    const client = new McpTestClient({ cliEntryPoint: cliEntryPointPath })
+
     try {
+      await client.connect(args)
+      const tools = await client.listTools()
+      expect(tools.tools).toContainEqual(expect.objectContaining({ name: 'deepwiki_fetch' }))
+    }
+    finally {
       await client.close()
     }
-    catch (error) {
-      console.error('Error closing client:', error)
-    }
-  })
-
-  it('should connect to server with default configuration', async () => {
-    await client.connectServer()
-    const tools = await client.listTools()
-
-    // When no args provided, default preset is "thinking", so it should include generate_thought
-    expect(Array.isArray(tools.tools)).toBe(true)
-    const toolNames = tools.tools.map((t: any) => t.name)
-    console.log('Available tools:', toolNames)
-    expect(toolNames).toContain('deepwiki.fetch')
   })
 })
 

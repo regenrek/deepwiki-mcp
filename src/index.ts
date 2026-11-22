@@ -5,41 +5,32 @@ import { runMain as _runMain, defineCommand } from 'citty'
 import { version } from '../package.json'
 import { createServer, startServer, stopServer } from './server'
 import { deepwikiTool } from './tools/deepwiki'
-import { deepwikiSearchTool } from './tools/deepwikiSearch'
 
 const cli = defineCommand({
   meta: {
     name: 'mcp-instruct',
     version,
-    description: 'Run the MCP starter with stdio, http, or sse transport',
+    description: 'Run the DeepWiki MCP server over stdio',
   },
   args: {
-    http: { type: 'boolean', description: 'Run with HTTP transport' },
-    sse: { type: 'boolean', description: 'Run with SSE transport' },
+    http: { type: 'boolean', description: 'Unsupported legacy transport' },
+    sse: { type: 'boolean', description: 'Unsupported legacy transport' },
     stdio: { type: 'boolean', description: 'Run with stdio transport (default)' },
-    port: { type: 'string', description: 'Port for http/sse (default 3000)', default: '3000' },
-    endpoint: { type: 'string', description: 'HTTP endpoint (default /mcp)', default: '/mcp' },
   },
   async run({ args }) {
-    const mode = args.http ? 'http' : args.sse ? 'sse' : 'stdio'
+    if (args.http || args.sse) {
+      process.stderr.write('HTTP and SSE transports are disabled. Remove --http or --sse to use local stdio, or migrate to the official DeepWiki MCP server: https://docs.devin.ai/work-with-devin/deepwiki-mcp\n')
+      process.exitCode = 1
+      return
+    }
+
     const mcp = createServer({ name: 'my-mcp-server', version })
 
     process.on('SIGTERM', () => stopServer(mcp))
     process.on('SIGINT', () => stopServer(mcp))
 
     deepwikiTool({ mcp } as McpToolContext)
-    // deepwikiSearchTool({ mcp } as McpToolContext)
-
-    if (mode === 'http') {
-      await startServer(mcp, { type: 'http', port: Number(args.port), endpoint: args.endpoint })
-    }
-    else if (mode === 'sse') {
-      console.log('Starting SSE server...')
-      await startServer(mcp, { type: 'sse', port: Number(args.port) })
-    }
-    else if (mode === 'stdio') {
-      await startServer(mcp, { type: 'stdio' })
-    }
+    await startServer(mcp)
   },
 })
 

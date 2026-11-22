@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Security
+- Disable the HTTP and SSE transports. The CLI rejects `--http` and `--sse` with migration guidance, and local stdio remains available.
+
 ## [0.0.9] - 2025-05-12
 
 ### Changed

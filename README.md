@@ -1,8 +1,8 @@
 # Deepwiki MCP Server
 
-**Maintenance has ended.** The unofficial `mcp-deepwiki` npm package is deprecated and will receive no security updates.
+**Maintenance has ended.** The unofficial `mcp-deepwiki` npm package is deprecated.
 
-In version 0.0.10, starting the server with `--sse` or `--http` opens a network listener without restricting it to localhost or requiring authentication. The default stdio mode does not open a network listener.
+In version 0.0.10, starting the server with `--sse` or `--http` opens a network listener without restricting it to localhost or requiring authentication. This source tree disables both flags and supports local stdio only.
 
 If you use either network mode, stop the running process. To migrate, remove the old `mcp-deepwiki` startup entry from your client and follow the [official DeepWiki MCP setup guide](https://docs.devin.ai/work-with-devin/deepwiki-mcp).
 
@@ -204,23 +204,6 @@ npm install
 npm run build
 ```
 
-#### Direct API Calls
-
-For HTTP transport, you can make direct API calls:
-
-```bash
-curl -X POST http://localhost:3000/mcp \
-  -H "Content-Type: application/json" \
-  -d '{
-    "id": "req-1",
-    "action": "deepwiki_fetch",
-    "params": {
-      "url": "https://deepwiki.com/user/repo",
-      "mode": "aggregate"
-    }
-  }'
-```
-
 ## Configuration
 
 ### Environment Variables
@@ -247,17 +230,14 @@ Build and run the Docker image:
 # Build the image
 docker build -t mcp-deepwiki .
 
-# Run with stdio transport (for development)
-docker run -it --rm mcp-deepwiki
-
-# Run with HTTP transport (for production)
-docker run -d -p 3000:3000 mcp-deepwiki --http --port 3000
+# Run with stdio transport
+docker run -i --rm mcp-deepwiki
 
 # Run with environment variables
-docker run -d -p 3000:3000 \
+docker run -i --rm \
   -e DEEPWIKI_MAX_CONCURRENCY=10 \
   -e DEEPWIKI_REQUEST_TIMEOUT=60000 \
-  mcp-deepwiki --http --port 3000
+  mcp-deepwiki
 ```
 
 ## Development
@@ -288,13 +268,7 @@ pnpm run build
    chmod +x ./node_modules/.bin/mcp-deepwiki
    ```
 
-2. **Connection Refused**: Make sure the port is available and not blocked by a firewall:
-   ```bash
-   # Check if port is in use
-   lsof -i :3000
-   ```
-
-3. **Timeout Errors**: For large repositories, consider increasing the timeout and concurrency:
+2. **Timeout Errors**: For large repositories, consider increasing the timeout and concurrency:
    ```
    DEEPWIKI_REQUEST_TIMEOUT=60000 DEEPWIKI_MAX_CONCURRENCY=10 npx mcp-deepwiki
    ```

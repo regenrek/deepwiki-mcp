@@ -52,7 +52,7 @@ For feature requests or enhancements:
 
 1. Clone the repository: `git clone https://github.com/regenrek/mcp-deepwiki.git`
 2. Install dependencies: `npm install`
-3. Run in development mode: `npm run dev-stdio` (or `dev-http`/`dev-sse`)
+3. Run in development mode: `npm run dev-stdio`
 4. Make your changes
 5. Run tests: `npm test`
 6. Run linting: `npm run lint`
