@@ -1,10 +1,8 @@
 # Deepwiki MCP Server
 
-**Maintenance has ended.** The unofficial `mcp-deepwiki` npm package is deprecated.
+**Security fix released in 0.0.12.** In version 0.0.10, the optional HTTP and SSE modes could accept unauthenticated network connections. Version 0.0.12 fixes this by rejecting `--http` and `--sse` before opening a network port. Local stdio remains available.
 
-In version 0.0.10, starting the server with `--sse` or `--http` opens a network listener without restricting it to localhost or requiring authentication. Version 0.0.12 disables both flags and supports local stdio only.
-
-If you use either network mode, stop the running process. To migrate, remove the old `mcp-deepwiki` startup entry from your client and follow the [official DeepWiki MCP setup guide](https://docs.devin.ai/work-with-devin/deepwiki-mcp).
+Maintenance has ended. If you run an older version with either network flag, stop the running process and remove its startup entry from your MCP client. To migrate, follow the [official DeepWiki MCP setup guide](https://docs.devin.ai/work-with-devin/deepwiki-mcp).
 
 <details>
 <summary>Historical documentation for the discontinued server</summary>
