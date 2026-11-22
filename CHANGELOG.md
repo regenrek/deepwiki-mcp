@@ -7,8 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.0.11] - 2026-11-22
+
 ### Security
 - Disable the HTTP and SSE transports. The CLI rejects `--http` and `--sse` with migration guidance, and local stdio remains available.
+- Update Zod to 4.6.6 to address CVE-2023-54404 and update the MCP SDK to 1.32.2 for Zod 4 compatibility.
 
 ## [0.0.9] - 2025-05-12
 
